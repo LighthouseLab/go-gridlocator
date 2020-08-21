@@ -65,18 +65,16 @@ func ConvertGridLocation(location string) (float64, float64, error) {
 		return 0, 0, errors.New("grid location must be either 4 or 6 digits")
 	}
 
-	location = strings.ToLower(location)
-
 	//lng = (($l[0] * 20) + ($l[2] * 2) + ($l[4]/12)  - 180);
 	l := make([]int, 6)
 
 	// Field
 	var err error
-	l[0], err = l2n(string(location[0]))
+	l[0], err = l2n(byte(location[0]))
 	if err != nil {
 		return 0, 0, errors.Wrap(err, "longitude field value")
 	}
-	l[1], err = l2n(string(location[1]))
+	l[1], err = l2n(byte(location[1]))
 	if err != nil {
 		return 0, 0, errors.Wrap(err, "latitude field value")
 	}
@@ -96,11 +94,11 @@ func ConvertGridLocation(location string) (float64, float64, error) {
 
 	if len(location) == 6 {
 		// Subsquare
-		l[4], err = l2n(string(location[4]))
+		l[4], err = l2n(location[4])
 		if err != nil {
 			return 0, 0, errors.Wrap(err, "longitude subsquare value")
 		}
-		l[5], err = l2n(string(location[5]))
+		l[5], err = l2n(location[5])
 		if err != nil {
 			return 0, 0, errors.Wrap(err, "latitude subsquare value")
 		}
@@ -129,37 +127,14 @@ func n2l(number int, uppercase bool) (string, error) {
 	}
 }
 
-var let2num = map[string]int{
-	`a`: 0,
-	`b`: 1,
-	`c`: 2,
-	`d`: 3,
-	`e`: 4,
-	`f`: 5,
-	`g`: 6,
-	`h`: 7,
-	`i`: 8,
-	`j`: 9,
-	`k`: 10,
-	`l`: 11,
-	`m`: 12,
-	`n`: 13,
-	`o`: 14,
-	`p`: 15,
-	`q`: 16,
-	`r`: 17,
-	`s`: 18,
-	`t`: 19,
-	`u`: 20,
-	`v`: 21,
-	`w`: 22,
-	`x`: 23,
-}
+// l2n checks if a given character (byte/uint8) is in range of a to x (ASCII 0x61-0x78)
+// and converts it to an integer between 0 to 23. l2n is case insensitive
+func l2n(letter byte) (int, error) {
+	letter = byte(strings.ToLower(string(letter))[0]) // Makes the input case insentitive (i.e. converts it to lowercase by default)
 
-func l2n(letter string) (int, error) {
-	val, ok := let2num[letter]
+	val, ok := int(letter-0x61), letter >= 0x61 && letter <= 0x78 // 0x61-0x78 = a to x (length: 0x17), see ASCII table
 	if !ok {
-		return 0, errors.New("illegal character")
+		return 0, errors.New("Illegal character")
 	}
 	return val, nil
 }
