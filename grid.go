@@ -8,12 +8,18 @@ import (
 	"github.com/pkg/errors"
 )
 
-// Convert converts the specified decimanl longitude and latitude into the six
-// digit Maidenhead grid locator.
-func Convert(latitude, longitude float64) (string, error) {
+// Coordinates contains latitude and longitude.
+type Coordinates struct {
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
+}
 
-	lat := latitude + 90
-	lng := longitude + 180
+// Convert converts the specified latitude and longitude into the six
+// digit Maidenhead grid locator.
+func Convert(c *Coordinates) (string, error) {
+
+	lat := c.Latitude + 90
+	lng := c.Longitude + 180
 
 	// Field
 	lat = (lat / 10) // + 0.0000001;
