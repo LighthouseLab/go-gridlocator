@@ -19,3 +19,35 @@ If we want the Maidenhead Locator string of Londen, it would be:
 | Field | Square | Subsquare | Ext. Subsq. |
 | ----- | ------ | --------- | ----------- |
 | IO    | 91     | xm        | 02          |
+
+# How to use this Go module
+
+Assuming you have set up a working instance of Go, using this module in your app is fairly easy
+
+1. Fetch this module
+
+```sh
+go get -u github.com/LighthouseLab/go-maidenhead
+```
+
+2. Import the package and use the provided functionalities in your app. An example of a very basic app is shown below:
+
+```golang
+package main
+
+import (
+	"fmt"
+	"os"
+
+	"github.com/LighthouseLab/go-maidenhead"
+)
+
+func main() {
+	// Converting coords to grid sq
+	val, err := gridlocator.Convert(&gridlocator.Coordinates{48.858370, 2.294481})
+	if err != nil {
+		os.Exit(1)
+	}
+    fmt.Println(val)
+}
+```
