@@ -56,6 +56,26 @@ func Convert(c *Coordinates) (string, error) {
 	}
 	locator += val
 
+	// Square
+	lat = 10 * (lat - math.Floor(lat))
+	lng = 10 * (lng - math.Floor(lng))
+	locator += strconv.Itoa(int(math.Floor(lng)))
+	locator += strconv.Itoa(int(math.Floor(lat)))
+
+	// Subsquare
+	lat = 24 * (lat - math.Floor(lat))
+	lng = 24 * (lng - math.Floor(lng))
+	val, err = n2l(int(math.Floor(lng)), true)
+	if err != nil {
+		return "", errors.Wrap(err, "subsquare longitude")
+	}
+	locator += val
+	val, err = n2l(int(math.Floor(lat)), true)
+	if err != nil {
+		return "", errors.Wrap(err, "subsquare latitude")
+	}
+	locator += val
+
 	return locator, nil
 }
 

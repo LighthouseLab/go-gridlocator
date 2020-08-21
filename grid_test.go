@@ -14,11 +14,11 @@ func TestConvert(t *testing.T) {
 		expected string
 		err      error
 	}{
-		{0, 0, "JJ00aa", nil},
-		{48.146666666666667, 11.608333333333333, "JN58td", nil}, // Munich
-		{-34.91, -56.211666666666667, "GF15vc", nil},            // Montevideo
-		{38.92, -77.065, "FM18lw", nil},                         // Washington, D.C.
-		{-41.283333333333333, 174.745, "RE78ir", nil},           // Wellington
+		{0, 0, "JJ00aa00AA", nil},
+		{48.146666666666667, 11.608333333333333, "JN58td25XE", nil}, // Munich
+		{-34.91, -56.211666666666667, "GF15vc41OO", nil},            // Montevideo
+		{38.92, -77.065, "FM18lw20ET", nil},                         // Washington, D.C.
+		{-41.283333333333333, 174.745, "RE78ir92JA", nil},           // Wellington
 	}
 
 	for _, tt := range tests {
