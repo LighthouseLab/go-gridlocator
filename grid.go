@@ -24,12 +24,13 @@ func Convert(c *Coordinates) (string, error) {
 	// Field
 	lat = (lat / 10) // + 0.0000001;
 	lng = (lng / 20) // + 0.0000001;
-	val, err := upperN2L(int(math.Floor(lng)))
+	val, err := n2l(int(math.Floor(lng)), true)
 	if err != nil {
 		return "", errors.Wrap(err, "field longitude")
 	}
 	locator := val
-	val, err = upperN2L(int(math.Floor(lat)))
+	val, err = n2l(int(math.Floor(lat)), true)
+
 	if err != nil {
 		return "", errors.Wrap(err, "field latitude")
 	}
@@ -44,12 +45,12 @@ func Convert(c *Coordinates) (string, error) {
 	// Subsquare
 	lat = 24 * (lat - math.Floor(lat))
 	lng = 24 * (lng - math.Floor(lng))
-	val, err = n2l(int(math.Floor(lng)))
+	val, err = n2l(int(math.Floor(lng)), false)
 	if err != nil {
 		return "", errors.Wrap(err, "subsquare longitude")
 	}
 	locator += val
-	val, err = n2l(int(math.Floor(lat)))
+	val, err = n2l(int(math.Floor(lat)), false)
 	if err != nil {
 		return "", errors.Wrap(err, "subsquare latitude")
 	}
@@ -111,44 +112,21 @@ func ConvertGridLocation(location string) (float64, float64, error) {
 	return lat, long, nil
 }
 
-var num2let = []string{
-	`a`,
-	`b`,
-	`c`,
-	`d`,
-	`e`,
-	`f`,
-	`g`,
-	`h`,
-	`i`,
-	`j`,
-	`k`,
-	`l`,
-	`m`,
-	`n`,
-	`o`,
-	`p`,
-	`q`,
-	`r`,
-	`s`,
-	`t`,
-	`u`,
-	`v`,
-	`w`,
-	`x`,
-}
-
-func n2l(number int) (string, error) {
-	if number > (len(num2let) - 1) {
+// n2l checks if a given integer is in range of 0 to 23
+// and converts it to an ASCII character (byte/uint8) in the range of a-x (0x61-0x78).
+// An error is thrown if the number is out of bounds (>23).
+func n2l(number int, uppercase bool) (string, error) {
+	if number > (0x17) {
 		return "", errors.New("number out of bounds")
 	}
 
-	return num2let[number], nil
-}
+	n := number + 0x61
 
-func upperN2L(number int) (string, error) {
-	val, err := n2l(number)
-	return strings.ToUpper(val), err
+	if uppercase {
+		return strings.ToUpper(string(n)), nil
+	} else {
+		return string(n), nil
+	}
 }
 
 var let2num = map[string]int{
