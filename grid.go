@@ -82,13 +82,13 @@ func ConvertGridLocation(location string) (float64, float64, error) {
 	// Square
 	val, err := strconv.ParseInt(string(location[2]), 10, 64)
 	if err != nil {
-		return 0, 0, errors.Wrap(err, "longitude sqare value")
+		return 0, 0, errors.Wrap(err, "longitude square value")
 	}
 	l[2] = int(val)
 
 	val, err = strconv.ParseInt(string(location[3]), 10, 64)
 	if err != nil {
-		return 0, 0, errors.Wrap(err, "latitude sqare value")
+		return 0, 0, errors.Wrap(err, "latitude square value")
 	}
 	l[3] = int(val)
 
