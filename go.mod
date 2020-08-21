@@ -1,4 +1,4 @@
-module github.com/jasonhancock/go-gridlocator
+module github.com/LighthouseLab/go-gridlocator
 
 go 1.14
 
