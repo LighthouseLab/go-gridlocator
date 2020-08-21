@@ -1,4 +1,4 @@
-module github.com/LighthouseLab/go-gridlocator
+module github.com/LighthouseLab/go-maidenhead
 
 go 1.14
 
